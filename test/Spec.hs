@@ -52,8 +52,8 @@ prop_breathFirstSearchLeveled  tree = isDescending $ (extractVal) <$> flatten tr
   where
     flatten t = (join $ breathFirstSearchLeveled t) 
     extractVal :: NNodeTree a -> a
-    extractVal (Leaf a) = a
-    extractVal (Node a _) = a
+    extractVal (NLeaf a) = a
+    extractVal (NNode a _) = a
 
 isDescending :: (Ord a) => [a] -> Bool
 isDescending (x:y:xs) = (x >= y) && isDescending(y:xs)
