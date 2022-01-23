@@ -5,41 +5,36 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-import Test.QuickCheck
-import Test.QuickCheck.Arbitrary
-import Test.QuickCheck.All
+module Test(main) where
+
 import BinTree
 import NNodeTree
 import MinHeapTest
 import Control.Monad
 import ListTest
 import BinTreeTest
+import MatrixTest
+import DijstrasTest
+import Test.Tasty (defaultMain)
+import Test.Tasty.Runners
 
 prop_revapp :: [Int] -> [Int] -> Bool
 prop_revapp xs ys = reverse (xs++ys) == reverse ys ++ reverse xs
 
--- An unbound arbritrary implementation
--- instance Arbitrary a => Arbitrary (BinTree a) where
---   arbitrary = arbitrarySizedTree
 
--- arbitrarySizedTree :: forall a. (Arbitrary a) => Gen (BinTree a)
--- arbitrarySizedTree = do
---   t <- arbitrary
---   l <- arbitrarySizedTree 
---   r <- arbitrarySizedTree 
---   z <- elements [(Node t l r), (Leaf t)]
---   return z
-prop_breathFirstSearchLeveled :: (NNodeTree Int) -> Bool
-prop_breathFirstSearchLeveled  tree = isDescending $ (extractVal) <$> flatten tree
+prop_breathFirstSearchLeveled :: NNodeTree Int -> Bool
+prop_breathFirstSearchLeveled  tree = isDescending $ extractVal <$> flatten tree
   where
-    flatten t = (join $ breathFirstSearchLeveled t) 
+    flatten t = join $ breathFirstSearchLeveled t
     extractVal :: NNodeTree a -> a
     extractVal (NLeaf a) = a
     extractVal (NNode a _) = a
 
-main = do
-       MinHeapTest.check
-       BinTreeTest.check 
-     
-       
+
+main = defaultMain $ TestGroup "Test All" [
+  MinHeapTest.check,
+  MatrixTest.check,
+  BinTreeTest.check,
+  DijstrasTest.dijstrasTest
+  ]
 

@@ -1,19 +1,17 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.1.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 7ae7d32c71aa4d73f127cbca3abcc23a74af694144cb00d7f77dab59d364b9df
 
 name:           DataStructures
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/DataStructures#readme>
 homepage:       https://github.com/githubuser/DataStructures#readme
 bug-reports:    https://github.com/githubuser/DataStructures/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2019 Author name here
+author:         samini91
+maintainer:     samini91@gmail.com
+copyright:      2021
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -27,18 +25,28 @@ source-repository head
 
 library
   exposed-modules:
-                  Lib
-                , BinTree
-                , NNodeTree
-                , MinHeap
-                
+      AdjList
+      BinTree
+      Dijkstra
+      Lib
+      Matrix
+      MinHeap
+      NNodeTree
   other-modules:
       Paths_DataStructures
   hs-source-dirs:
       src
+  default-extensions:
+      TypeFamilies
   build-depends:
-                mtl,
-                base >=4.7 && <5
+      aeson
+    , base
+    , bytestring
+    , containers
+    , monad-control
+    , mtl
+    , utf8-string
+    , vector
   default-language: Haskell2010
 
 executable DataStructures-exe
@@ -47,24 +55,49 @@ executable DataStructures-exe
       Paths_DataStructures
   hs-source-dirs:
       app
-  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N 
+  default-extensions:
+      TypeFamilies
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-                DataStructures,
-                mtl
-    , base >=4.7 && <5
+      DataStructures
+    , aeson
+    , base
+    , bytestring
+    , containers
+    , monad-control
+    , mtl
+    , utf8-string
+    , vector
   default-language: Haskell2010
 
 test-suite DataStructures-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      AdjListTest
+      BinTreeTest
+      DijstrasTest
+      ListTest
+      MatrixTest
+      MinHeapTest
       Paths_DataStructures
   hs-source-dirs:
       test
+  default-extensions:
+      TypeFamilies
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-                DataStructures
-              , QuickCheck
-              , mtl
-    , base >=4.7 && <5
+      DataStructures
+    , aeson
+    , base
+    , bytestring
+    , containers
+    , monad-control
+    , mtl
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , tasty-smallcheck
+    , utf8-string
+    , vector
   default-language: Haskell2010

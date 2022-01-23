@@ -12,11 +12,13 @@ module MinHeapTest
    check
 )
 where 
-import Test.QuickCheck
-import Test.QuickCheck.Arbitrary
 import MinHeap
 import Control.Monad.State
 import ListTest
+import Test.Tasty.QuickCheck
+import Test.Tasty
+import Test.Tasty.Runners
+import Test.Tasty.QuickCheck as QC
 
 instance Arbitrary Int => Arbitrary (MinHeap Int) where
          arbitrary = sized arbitraryMinHeap
@@ -66,10 +68,12 @@ minHeap1= runState minHeapState' x
 --minHeap = merge (snd minHeap0) (snd minHeap1)
 minHeap = popAll $ merge (snd minHeap0) (snd minHeap1)
             
-return []
-check = $quickCheckAll          
+-- return []
+-- check = $quickCheckAll          
 
-                
+
+check :: TestTree
+check = TestGroup "MinHeapTests" [QC.testProperty "Insert MinHeap" prop_MinHeap]
 
 
 

@@ -7,7 +7,8 @@ module MinHeap
   insert,
   insert',
   pop,
-  popAll
+  popAll,
+  maybePop
   )
   where
 
@@ -23,7 +24,7 @@ getRank Leaf = 0
 insert :: (Ord a) => a -> State (MinHeap a) ()
 insert val = state $ (\heap -> ((), insert' val heap ))
 
-insert' :: (Ord a) => a -> MinHeap a-> (MinHeap a)
+insert' :: (Ord a) => a -> MinHeap a -> MinHeap a
 insert' val heap = merge (Node 0 val Leaf Leaf) heap
 
 type Rank = Int
@@ -49,7 +50,11 @@ pop = state $ (\heap -> (pop' heap))
 
 pop' :: MinHeap Int -> (Int, MinHeap Int)
 pop' (Node _ val l r ) = (val,(merge l r))
-pop' (Leaf) = (0, Leaf) -- hmm this is a problem leaf doenst have a value so what do i return ? do i put an a in the constructor or lift this in a monad? 
+pop' (Leaf) = (0, Leaf) -- hmm this is a problem leaf doenst have a value so what do i return ? do i put an a in the constructor or lift this in a monad?
+
+maybePop :: (Ord a) => MinHeap a -> (Maybe a, MinHeap a)
+maybePop (Node _ val l r ) = (return val,(merge l r))
+maybePop (Leaf) = (Nothing, Leaf) -- hmm this is a problem leaf doenst have a value so what do i return ? do i put an a in the constructor or lift this in a monad? 
 
 popAll :: (MinHeap Int) -> [Int]
 popAll heap@(Node _ _ _ _) = let (p,h) = (pop' heap) in p : popAll h
